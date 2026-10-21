@@ -1,18 +1,24 @@
 package com.example.taskmanagertd
 
 import android.R
+import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -24,13 +30,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagertd.ui.theme.TaskManagerTdTheme
+import org.intellij.lang.annotations.JdkConstants
 
 data class Task (
     val id:Int,
@@ -199,7 +209,39 @@ fun TaskManagerScreen() {
             }
         ) { Text("Hozzáad") }
 
+        if (taskok.isEmpty())
+            Text(
+                "Nincsenek taskok felvéve a rendszerben",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(
+                    items = taskok,
+                    key = { task -> task.id }
+                ) { task -> TaskCard(task) }
+}}}}
 
+@Composable
+fun TaskCard(task: Task) {
+    Box() {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(task.priortias.toString())
+            Column() {
+                Text(task.name)
+                Text(task.kategoria)
+                Text(task.priortias.toString())
+            }
+            Row() {
+                Button(onClick = {}){ Text("Szerkeszt")}
+                Button(onClick = {}){ Text("Töröl")}
+            }
+        }
     }
 }
 
