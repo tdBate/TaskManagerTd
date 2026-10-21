@@ -52,7 +52,7 @@ data class Task (
     val name: String,
     val kategoria: String,
     val priortias: Int,
-    val finished: Boolean
+    var finished: Boolean
 )
 
 
@@ -245,7 +245,9 @@ fun TaskCard(task: Task) {
             Row() {
                 Button(onClick = {}){ Text("Szerkeszt")}
                 Button(onClick = {}){ Text("Töröl")}
-                Button(onClick = {}){ Text("Elkészült")}
+                Button(onClick = {
+                    task.finished = !task.finished
+                }){ Text("Elkészült")}
             }
         }
     }
