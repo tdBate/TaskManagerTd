@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import com.example.taskmanagertd.ui.theme.TaskManagerTdTheme
 import org.intellij.lang.annotations.JdkConstants
 
-data class Task (
+class Task (
     val id:Int,
     val name: String,
     val kategoria: String,
@@ -247,7 +247,9 @@ fun TaskCard(task: Task) {
                 Button(onClick = {}){ Text("Töröl")}
                 Button(onClick = {
                     task.finished = !task.finished
-                }){ Text("Elkészült")}
+                }) {
+                    Text(if (task.finished) "Újra aktív" else "Elkészült")
+                }
             }
         }
     }
