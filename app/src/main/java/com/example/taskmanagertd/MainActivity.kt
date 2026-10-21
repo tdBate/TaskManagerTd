@@ -229,11 +229,13 @@ fun TaskManagerScreen() {
                 items(
                     items = taskok,
                     key = { task -> task.id }
-                ) { task -> TaskCard(task) }
+                ) { task -> TaskCard(task,{
+                    taskok.remove(task)
+                }) }
 }}}}
 
 @Composable
-fun TaskCard(task: Task) {
+fun TaskCard(task: Task, deleteAt: () -> Unit) {
     Box() {
         Row(modifier = Modifier.fillMaxWidth()) {
             TaskPriorityAvatar(task.priortias.toString())
@@ -243,8 +245,9 @@ fun TaskCard(task: Task) {
                 Text(task.priortias.toString())
             }
             Row() {
-                Button(onClick = {}){ Text("Szerkeszt")}
-                Button(onClick = {}){ Text("Töröl")}
+                Button(onClick = {
+                }){ Text("Szerkeszt")}
+                Button(onClick = deleteAt){ Text("Töröl")}
                 Button(onClick = {
                     task.finished = !task.finished
                 }) {
