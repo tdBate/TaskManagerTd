@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
@@ -32,6 +35,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -231,7 +236,7 @@ fun TaskManagerScreen() {
 fun TaskCard(task: Task) {
     Box() {
         Row(modifier = Modifier.fillMaxWidth()) {
-            Text(task.priortias.toString())
+            TaskPriorityAvatar(task.priortias.toString())
             Column() {
                 Text(task.name)
                 Text(task.kategoria)
@@ -240,8 +245,28 @@ fun TaskCard(task: Task) {
             Row() {
                 Button(onClick = {}){ Text("Szerkeszt")}
                 Button(onClick = {}){ Text("Töröl")}
+                Button(onClick = {}){ Text("Elkészült")}
             }
         }
+    }
+}
+
+@Composable
+fun TaskPriorityAvatar(name: String) {
+    val initials = name.uppercase()
+
+    Box(
+        modifier = Modifier
+            .size(52.dp)
+            .clip(CircleShape)
+            .background(Color.Green),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = initials,
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
