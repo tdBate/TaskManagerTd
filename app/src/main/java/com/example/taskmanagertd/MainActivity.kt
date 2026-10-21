@@ -2,6 +2,7 @@ package com.example.taskmanagertd
 
 import android.R
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,6 +55,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TaskManagerScreen() {
+    val context = LocalContext.current
+
     //adatok
     var name: String by remember {
         mutableStateOf("")
@@ -161,15 +165,37 @@ fun TaskManagerScreen() {
 
         Button(
             onClick = {
-                val t1:Task = Task(
-                    id=++nextId,
-                    name= name,
-                    kategoria = kategoria,
-                    priortias = priortias,
-                    finished = false //ezt is javítani
-                )
+                if (name=="") {
+                    nameError = true
+                }
 
-                taskok.add(t1)
+                if (kategoria=="") {
+                    kategoriaError = true
+                }
+
+                if (!(priortias ==1 || priortias==2 || priortias==3)) {
+                    priortiasError = true
+                }
+
+                if (!(nameError||kategoriaError||priortiasError)) {
+                    val t1:Task = Task(
+                        id=++nextId,
+                        name= name,
+                        kategoria = kategoria,
+                        priortias = priortias,
+                        finished = false //ezt is javítani
+                    )
+                    taskok.add(t1)
+
+                    name = ""
+                    kategoria = ""
+                    priortias = 1
+
+                    Toast.makeText(
+                        context, "Feladat sikeresen hozzáadva!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         ) { Text("Hozzáad") }
 
