@@ -8,13 +8,24 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagertd.ui.theme.TaskManagerTdTheme
@@ -42,6 +53,39 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TaskManagerScreen() {
+    //adatok
+    var name: String by remember {
+        mutableStateOf("")
+    }
+
+    var nameError: Boolean by remember {
+        mutableStateOf(false)
+    }
+
+    var kategoria: String by remember {
+        mutableStateOf("")
+    }
+
+    var kategoriaError: Boolean by remember {
+        mutableStateOf(false)
+    }
+
+    var priortias: Int by remember {
+        mutableIntStateOf(1)
+    }
+
+    var priortiasError: Boolean by remember {
+        mutableStateOf(false)
+    }
+
+    val taskok = remember {
+        mutableStateListOf<Task>()
+    }
+
+    var nextId: Int by remember {
+        mutableIntStateOf(1)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,6 +96,84 @@ fun TaskManagerScreen() {
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold)
         Text("Szervezd meg a napi teendőidet!")
+
+        //inputok
+        OutlinedTextField(
+            value = name,
+            onValueChange = {
+                name = it
+                nameError = false
+            },
+            label = { Text("Név") },
+            supportingText = {
+                if (nameError)
+                    Text(
+                        "A név megadása kötelező!",
+                        color = MaterialTheme.colorScheme.error
+                    )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        OutlinedTextField(
+            value = kategoria,
+            onValueChange = {
+                kategoria = it
+                kategoriaError = false
+            },
+            label = { Text("Kategória") },
+            supportingText = {
+                if (kategoriaError)
+                    Text(
+                        "A kategória megadása kötelező!",
+                        color = MaterialTheme.colorScheme.error
+                    )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        OutlinedTextField(
+            value = priortias.toString(),
+            onValueChange = {
+                if (it != ""){
+                    priortias = it.toInt()
+                } else {
+                    priortias = 1
+                }
+                priortiasError = false
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
+            label = { Text("Prioritás") },
+            supportingText = {
+                if (priortiasError)
+                    Text(
+                        "A prioritás megadása kötelező!",
+                        color = MaterialTheme.colorScheme.error
+                    )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        Button(
+            onClick = {
+                val t1:Task = Task(
+                    id=++nextId,
+                    name= name,
+                    kategoria = kategoria,
+                    priortias = priortias,
+                    finished = false //ezt is javítani
+                )
+
+                taskok.add(t1)
+            }
+        ) { Text("Hozzáad") }
+
+
     }
 }
 
